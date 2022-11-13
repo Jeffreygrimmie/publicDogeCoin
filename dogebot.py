@@ -5,12 +5,19 @@ import time
 import robin_stocks.robinhood
 import datetime
 import yaml
+import tweepy
 
 
 def CurrentTime():
     now = datetime.datetime.now()
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
     return dt_string
+def tweet(status):
+    auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
+    auth.set_access_token(ACCESS_TOKEN, ACCESS_TOKEN_SECRET)
+    api = tweepy.API(auth)
+    api.update_status(status)
+    
 def sendMail(mailSubject,mailBody):
     with smtplib.SMTP("smtp.gmail.com", 587) as smtp:
             smtp.ehlo()
@@ -55,6 +62,10 @@ EMAIL_PASSWORD = conf['user']['emailpassword']
 API_KEY = conf['user']['apikey']
 rhuser = conf['user']['rhusername']
 rhpass = conf['user']['rhpassword']
+CONSUMER_KEY = conf['user']['CONSUMER_KEY']
+CONSUMER_SECRET = conf['user']['CONSUMER_SECRET']
+ACCESS_TOKEN = conf['user']['ACCESS_TOKEN']
+ACCESS_TOKEN_SECRET = conf['user']['ACCESS_TOKEN_SECRET']
 
 login = robin_stocks.robinhood.login(rhuser, rhpass, expiresIn=86400, by_sms=True) #robinhood login
 currentBuyIn = 0.04 #price of doge on last pruchase
@@ -69,12 +80,14 @@ while True:
         mailSubject = "Doge coin has dropped below current low threshold!"
         mailBody = ('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         sendMail(mailSubject,mailBody)
+        tweet('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         print('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         delay()
     elif float(currentPrice) > currentHighSetPoint:
         mailSubject = "Doge coin has hit the current high set point check your app."
         mailBody = ('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         sendMail(mailSubject,mailBody)
+        tweet('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         print('Current Price (USD): ' + str(currentPrice) + ' ' + str(CurrentTime()))
         delay()
     else:

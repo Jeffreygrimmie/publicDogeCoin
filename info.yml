@@ -4,3 +4,7 @@ user:
   apikey: #coinmarketcap API key
   rhusername: #robinhood username
   rhpassword: #robinhood password
+  CONSUMER_KEY: #twitter api key
+  CONSUMER_SECRET: #twitter api secret
+  ACCESS_TOKEN: #twitter access token
+  ACCESS_TOKEN_SECRET: #twitter access token secret

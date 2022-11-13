@@ -2,7 +2,7 @@ from requests import Request, Session
 import json
 import smtplib
 import time
-import robin_stocks
+import robin_stocks.robinhood
 import datetime
 import yaml
 
@@ -49,14 +49,14 @@ def dogeToDollar(doge, currentPrice):
     return conversion
 
 yaml.warnings({'YAMLLoadWarning': False})
-conf = yaml.load(open('info.yml'))
+conf = yaml.safe_load(open('info.yml'))
 EMAIL_ADDRESS = conf['user']['email']
 EMAIL_PASSWORD = conf['user']['emailpassword']
 API_KEY = conf['user']['apikey']
 rhuser = conf['user']['rhusername']
 rhpass = conf['user']['rhpassword']
 
-login = robin_stocks.login(rhuser, rhpass, expiresIn=86400, by_sms=True) #robinhood login
+login = robin_stocks.robinhood.login(rhuser, rhpass, expiresIn=86400, by_sms=True) #robinhood login
 currentBuyIn = 0.04 #price of doge on last pruchase
 currentHighSetPoint = 1.0
 

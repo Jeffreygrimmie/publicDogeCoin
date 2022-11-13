@@ -1,0 +1,6 @@
+user:
+  email: #emailaddress
+  emailpassword: #emailaddress password
+  apikey: #coinmarketcap API key
+  rhusername: #robinhood username
+  rhpassword: #robinhood password
